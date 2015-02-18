@@ -2,18 +2,18 @@
 SQL Injection
 =====================
 
-Often we write code that writes or reads from a database based on some
-parameters that are provided by the applications users. These parameters might
-be credentials, resource identifiers or any other variable that the user
-supplies to an application.
+Often we write code that interacts with a database using parameters provided by
+the applications users. These parameters might be credentials, resource
+identifiers or any other user-supplied data.
 
-Care must be taken with how database queries are constructed so that they
-cannot be subverted by an application user crafting malicious inputs. Such
-inputs are referred to as injections, where the user causes a query to run that
-has different consequences to those intended by the application developer.
+Care must be taken when dynamically creating database queries so they cannot be
+subverted by user crafted malicious input. Such inputs are referred to as SQL
+injections, where the user input changes the logic of the SQL query, which
+results in behavior not intended by the application developer.
 
-The results of successful SQL injection attacks can range from disclosure of
-information such as user passwords to gaining execution privileges and running
+The results of a successful SQL injection attack can include disclosure of
+sensitive information, such as user passwords, modification or deletion of
+important data, and gaining execution privileges allowing an attacker to run
 arbitrary commands on the database server.
 
 SQL injection can typically be mitigated by using some combination of [prepared
