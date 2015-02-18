@@ -12,32 +12,71 @@ A correct code example (SQLAlchemy):
 import sqlalchemy
 
 connection = engine.connect()
-query = "select username from users where"
-result = connection.execute("select username from users where")
+query = "select username from users where username == :name"
+result = connection.execute(query, name = myvar)
 for row in result:
     print "username:", row['username']
 connection.close()
-
-SQLAlchemy connection.execute(query, name = myvar)
-```
-
-A correct code example (MySQL):
-```python
-import subprocess
-subprocess.POpen('rm -rf /', shell=True)
-```
-
-A correct code example (Postgesql (psycop2)):
-```python
-import subprocess
-subprocess.POpen('rm -rf /', shell=True)
 ```
 
 ### Incorrect
 ```python
-0/0
+import sqlalchemy
+
+connection = engine.connect()
+query = "select username from users where username == %s" % myvar
+result = connection.execute(query)
+for row in result:
+    print "username:", row['username']
+connection.close()
 ```
-Go here to if you want your [ip address](https://icanhazip.com/).
+
+### Correct
+A correct code example (MySQL):
+```python
+import MySQLdb
+
+query = "select username from users where username == %s" % name
+con = MySQLdb.connect('localhost', 'testuser', 'test623', 'testdb');
+
+with con:
+    cur = con.cursor()
+    cur.execute(MySQLdb.escape_string(query))
+```
+
+### Incorrect
+An incorrect code example (MySQL):
+```python
+import MySQLdb
+
+query = "select username from users where username == %s" % name
+con = MySQLdb.connect('localhost', 'testuser', 'test623', 'testdb');
+
+with con:
+    cur = con.cursor()
+    cur.execute(query)
+```
+
+### Correct
+A correct code example (Postgesql (psycop2)):
+Note that the standard python '%' operator is not used.
+```python
+import psycopg2
+
+conn = psycopg2.connect("dbname=test user=postgres")
+cur = conn.cursor()
+cur.execute("select username from users where username == %s", (name,))
+```
+
+### Incorrect
+An incorrect code example (Postgesql (psycop2)):
+```python
+import psycopg2
+
+conn = psycopg2.connect("dbname=test user=postgres")
+cur = conn.cursor()
+cur.execute("select username from users where username == %s" % name)
+```
 
 ## Consequences
 
