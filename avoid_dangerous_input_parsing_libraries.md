@@ -20,11 +20,11 @@ here.
 TODO(ljfisher) This should be put in a table
 
 Python
-Module  | Problem | Use | Avoid
--------------------------------
-PyYAML | Allows creating arbitrary Python objects. | yaml.safe_load | yaml.load
-pickle | Allows creating arbitrary Python objects. | Do not use | pickle.load, pickle.loads
-eval | Runs all input as Python code | Do not use | eval
+| Module  | Problem | Use | Avoid
+| --------|---------|-----|---------
+| PyYAML | Allows creating arbitrary Python objects. | yaml.safe_load | yaml.load
+| pickle | Allows creating arbitrary Python objects. | Do not use | pickle.load, pickle.loads
+| eval | Runs all input as Python code | Do not use | eval
 
 ## Python Example
 ### Correct
