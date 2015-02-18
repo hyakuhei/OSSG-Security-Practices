@@ -59,6 +59,39 @@ def get_file(file_id):
 
 ### Incorrect
 
+A typical remote vector for path traversal in web applications
+is serving or storing files on the file system. Consider the following example:
+
+```python
+
+
+import os
+from flask import Flask,redirect, request, send_file
+
+app = Flask(__name__)
+
+@app.route('/')
+def cat_picture():
+    image_name = request.args.get('image_name')
+    if not image_name:
+        return 404
+    return send_file(os.path.join(os.getcwd(), image_name))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+```
+
+As the attacker controls the input that is used directly in
+constructing a path they are able to access any file on the system. For
+example consider what happens if an attacker makes a request like:
+
+```
+curl http://example.com/?image_name=../../../../../../../../etc/passwd
+```
+
+
 Path traversal flaws also can happen when unpacking a compressed archive of files. An example of where this has happened within OpenStack is [OSSA-2011-001](http://security.openstack.org/ossa/OSSA-2011-001.html). In this
 case a tar file from an untrusted source could be unpacked to overwrite files
 on the host operating system.
