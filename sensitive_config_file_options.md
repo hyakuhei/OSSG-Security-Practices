@@ -20,7 +20,17 @@ A correct code example:
 
 ## Consequences
 
-* Sensitive information contained in config files will be leaked into logs
+If an option is not marked secret and the logger debug flag is activated, that sensitive information would appear in the logs.
+
+### Example Log Entries
+```
+2015-02-18 20:46:48.928 25351 DEBUG nova.openstack.common.service [-] Full set of CONF: _wait_for_exit_or_signal /usr/lib/python2.7/dist-packages/nova/openstack/common/service.py:166
+2015-02-18 20:46:48.937 25351 DEBUG nova.openstack.common.service [-] Configuration options gathered from: log_opt_values /usr/lib/python2.7/dist-packages/oslo/config/cfg.py:1982
+2015-02-18 20:46:51.482 25351 DEBUG nova.openstack.common.service [-] host.ip                 = 127.0.0.1 log_opt_values /usr/lib/python2.7/dist-packages/oslo/config/cfg.py:2002
+2015-02-18 20:46:51.491 25351 DEBUG nova.openstack.common.service [-] host.port               = 443 log_opt_values /usr/lib/python2.7/dist-packages/oslo/config/cfg.py:2002
+2015-02-18 20:46:51.502 25351 DEBUG nova.openstack.common.service [-] host.username           = root log_opt_values /usr/lib/python2.7/dist-packages/oslo/config/cfg.py:2002
+2015-02-18 20:46:51.486 25351 DEBUG nova.openstack.common.service [-] host.password           = SuperSecretPassword log_opt_values /usr/lib/python2.7/dist-packages/oslo/config/cfg.py:2002
+```
 
 ## References
 
