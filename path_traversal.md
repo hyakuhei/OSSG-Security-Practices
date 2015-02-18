@@ -59,7 +59,7 @@ def get_file(file_id):
 
 ### Incorrect
 
-Path traversal flaws also can happen when unpacking a compressed archive of files. An example of where this has happened within OpenStack is [OSSA-2011-001]((http://security.openstack.org/ossa/OSSA-2011-001.html). In this
+Path traversal flaws also can happen when unpacking a compressed archive of files. An example of where this has happened within OpenStack is [OSSA-2011-001](http://security.openstack.org/ossa/OSSA-2011-001.html). In this
 case a tar file from an untrusted source could be unpacked to overwrite files
 on the host operating system.
 
