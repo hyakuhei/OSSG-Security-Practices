@@ -1,6 +1,6 @@
 exec()
 =====================
-The python docs [0] succinctly describe why ```exec()``` is bad:
+The [python docs](https://docs.python.org/2.0/ref/exec.html) succinctly describe why ```exec()``` is bad:
 "This statement supports dynamic execution of Python code."
 
 ### Correct
