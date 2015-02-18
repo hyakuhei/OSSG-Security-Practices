@@ -78,3 +78,4 @@ lead to users credentials being stolen.
 ## References
 
 * [CWE-601: URL Redirection to Untrusted Site](http://cwe.mitre.org/data/definitions/601.html)
+* [OWASP Top 10 2013 - Unvalidated redirects and forwards ](https://www.owasp.org/index.php/Top_10_2013-A10-Unvalidated_Redirects_and_Forwards)
