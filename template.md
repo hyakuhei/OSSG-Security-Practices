@@ -17,7 +17,11 @@ subprocess.POpen('rm -rf /', shell=True)
 ```python
 0/0
 ```
-Go here to if you want your [ip address](https://icanhazip.com/).
+
+Go here to if you want your [ip address](https://icanhazip.com/). You
+can also use [reference style links][1] if you prefer.
+
+[1]: https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet#links
 
 ## Consequences
 

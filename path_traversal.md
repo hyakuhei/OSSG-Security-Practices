@@ -92,3 +92,5 @@ code execution.
 ## References
 
 * [CWE-22: Improper Limitation of a Pathname to a Restricted Directory](http://cwe.mitre.org/data/definitions/22.html)
+* [OWASP: Path Traversal](https://www.owasp.org/index.php/Path_Traversal)
+* [Wikipedia: Directory traversal attack](http://en.wikipedia.org/wiki/Directory_traversal_attack)
