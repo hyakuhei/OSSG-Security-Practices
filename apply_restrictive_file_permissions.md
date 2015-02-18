@@ -9,7 +9,7 @@ In particular, any files which may contain confidential information should be se
 Discretion should be used when granting write access to files such as configuration files to prevent vulnerabilities including denial of service and remote code execution.
 
 ### Correct
-Consider the configuration file for a service "secureserv" which configuration including passwords in "secureserv.conf".  Since it contains sensitive information, other users should not be given access.
+Consider the configuration file for a service "secureserv" which stores configuration including passwords in "secureserv.conf".  Since it contains sensitive information, other users should not be given access.
 
 ```sh
 ls -l secureserv.conf
