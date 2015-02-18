@@ -22,6 +22,6 @@ cfg.StrOpt('protocol',
 
 ## Consequences
 
-* A less knowledgable deployer of OpenStack may inadvertently use unsecure connections on a public network.
+* A less knowledgeable deployer of OpenStack may inadvertently use unsecure connections on a public network.
 
 ## References
