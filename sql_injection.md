@@ -2,9 +2,13 @@
 SQL Injection
 =====================
 
-Put your description here.
+SQL Injection is a class of vulnerability that allows an attacker to create
+malicious program inputs that result in undesirable SQL queries being
+constructed and executed against a database. The results of successful SQL
+injection attacks can range from disclosing information to gaining execution
+privileges on the database server.
 
-Separate your paragraphs with a blank line.
+Some other paragraph
 
 ### Correct
 A correct code example (SQLAlchemy):
