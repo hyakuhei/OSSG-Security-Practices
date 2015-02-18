@@ -10,8 +10,13 @@ privileges on the database server.
 
 Some other paragraph
 
-### Correct
-A correct code example (SQLAlchemy):
+## Code Examples
+### SQLAlchemy
+#### Correct
+
+This example uses SQLAlchemy's built in parameter substitution mechanism to
+safely replace the ':name' variable with a provided value.
+
 ```python
 import sqlalchemy
 
@@ -23,7 +28,12 @@ for row in result:
 connection.close()
 ```
 
-### Incorrect
+#### Incorrect
+
+This example uses python's built in parameter substitution mechanism '%' to
+insert a value into the query string, this will perform an unsafe literal
+insertion and not provide any escaping.
+
 ```python
 import sqlalchemy
 
@@ -35,8 +45,13 @@ for row in result:
 connection.close()
 ```
 
-### Correct
-A correct code example (MySQL):
+### MySQL
+#### Correct
+
+In this example the query is created using pythons standard, unsafe '%'
+operator. MySQL's 'escape_string' method is used to perform escaping on the
+query string immediately before executing it.
+
 ```python
 import MySQLdb
 
@@ -48,8 +63,11 @@ with con:
     cur.execute(MySQLdb.escape_string(query))
 ```
 
-### Incorrect
-An incorrect code example (MySQL):
+#### Incorrect
+
+Without using any escaping mechanism, potentially unsafe queries can be
+created.
+
 ```python
 import MySQLdb
 
@@ -61,9 +79,14 @@ with con:
     cur.execute(query)
 ```
 
-### Correct
-A correct code example (Postgesql (psycop2)):
-Note that the standard python '%' operator is not used.
+### Postgresql (Psycop2)
+#### Correct
+
+This example uses Psycop2's parameter substitution mechanism to build a query
+string. Despite the use '%' to indicate the substitution token, it is not the
+same as pythons built in string operator %, note the value(s) are passed as
+parameters to 'execute' separately.
+
 ```python
 import psycopg2
 
@@ -72,8 +95,13 @@ cur = conn.cursor()
 cur.execute("select username from users where username == %s", (name,))
 ```
 
-### Incorrect
-An incorrect code example (Postgesql (psycop2)):
+#### Incorrect
+
+This example uses python's unsafe default parameter substitution mechanism
+to build a query string. This will not perform any escaping, unlike the correct
+example above the string is processed and passed as a single parameter to
+'execute'
+
 ```python
 import psycopg2
 
