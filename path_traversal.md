@@ -2,7 +2,7 @@
 Path Traversal
 ==============
 
-A path traversal attack is when an attacker supplies input that is used directly to access a file on the file system. The input usually attempts to break out of the applications working directory and access a file elsewhere on the file system.
+A path traversal attack is when an attacker supplies input that is used directly to access a file on the file system. The input usually attempts to break out of the application's working directory and access a file elsewhere on the file system.
 This category of attack can be mitigated by restricting the scope of file system access and reducing attack surface by using a restricted file permission profile.
 
 
