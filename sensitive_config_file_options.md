@@ -24,4 +24,5 @@ A correct code example:
 
 ## References
 
+* http://docs.openstack.org/developer/oslo.config/cfg.html#special-handling-instructions
 * https://review.openstack.org/#/c/138944
