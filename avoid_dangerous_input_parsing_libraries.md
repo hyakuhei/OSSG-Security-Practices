@@ -58,6 +58,16 @@ key: 'value'
 conf = yaml.load(conf_str)
 ```
 
+Niether pickle or eval should ever be used with input that is not trusted.
+
+```python
+import pickle
+f = open('myfile', 'r')
+s = f.read()
+pickle.load(s) # can execute code in myfile
+
+eval(s) # executes myfile contents as python code
+
 ## Consequences
 
 Anyone that can control the input passed to dangerous libraries, such as by
@@ -67,3 +77,6 @@ arbitrary code on your system .
 ## References
 
 * [PyYAML: Loading YAML](http://pyyaml.org/wiki/PyYAMLDocumentation#LoadingYAML)
+* [Why Python Pickle is Insecure](http://michael-rushanan.blogspot.com/2012/10/why-python-pickle-is-insecure.html)
+(https://blog.nelhage.com/2011/03/exploiting-pickle/)
+* [Exploiting misue of Python's "pickle"](http://michael-rushanan.blogspot.com/2012/10/why-python-pickle-is-insecure.html)
