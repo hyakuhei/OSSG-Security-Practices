@@ -26,7 +26,13 @@ def count_lines(website):
 
 (that output is correct, by the way - google does have 7 lines)
 
-If we naively convert that to use `shell=False`, it doesn't work.
+The function is insecure because it uses `shell=True`, which allows
+[shell injection[(/shell_injection.md). A user to who instructs your
+code to fetch the website `; rm -rf /` can do terrible things to your
+machine.
+
+If we naively convert the function to use `shell=False`, it doesn't
+work.
 
 ```python
 def count_lines(website):
