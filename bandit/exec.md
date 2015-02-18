@@ -1,7 +1,7 @@
 exec()
 =====================
-The python docs [0] succinctly describe why ```exec()``` is bad:
-"This statement supports dynamic execution of Python code."
+The [python docs](https://docs.python.org/2.0/ref/exec.html) succinctly describe why ```exec()``` is bad:
+* "This statement supports dynamic execution of Python code."
 
 ### Correct
 Look for alternate solutions than ```exec```; often times you can find other modules or builtins to complete the task securely.

@@ -1,6 +1,6 @@
 
-Coding Practice Title
-=====================
+Use Strong Cryptographic Algorithms
+===================================
 
 Put your description here.
 
