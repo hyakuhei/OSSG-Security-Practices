@@ -22,8 +22,8 @@ def ping(myserver):
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=58 time=5.82 ms
 ```
 
-If the server parameter is user controlled, this can get ugly pretty
-quickly.
+If the `myserver` parameter is user controlled, this can get ugly
+pretty quickly.
 
 This program just supplies a string as a command to the shell, which
 runs the whole thing without thinking too hard about it. There's no
