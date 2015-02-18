@@ -22,7 +22,7 @@ To set the file permissions as shown above, run the following command in Linux:
 chmod 0600 secureserv.conf
 ```
 
-Note that it is also important to verify the owner and group of the file.  It is particularly important to note what other users are part of a group that you give access to.  The best practice is that if group access it not needed, don't grant it.  This is part of the principle of least privilege.
+Note that it is also important to verify the owner and group of the file.  It is particularly important to note what other users are part of a group that you give access to.  The best practice is that if group access is not needed, don't grant it.  This is part of the principle of least privilege.
 
 ### Incorrect
 Consider the same example config file in the above example with the following permissions:
