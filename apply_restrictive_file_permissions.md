@@ -9,7 +9,7 @@ In particular, any files which may contain confidential information should be se
 Discretion should be used when granting write access to files such as configuration files to prevent vulnerabilities including denial of service and remote code execution.
 
 ### Correct
-Consider the configuration file for a service "secureserv" which configuration including passwords in "secureserv.conf".  Since it contains sensitive information, other users should not be given access.
+Consider the configuration file for a service "secureserv" which stores configuration including passwords in "secureserv.conf".  Since it contains sensitive information, other users should not be given access.
 
 ```sh
 ls -l secureserv.conf
@@ -36,17 +36,13 @@ Here the file permissions are set to 666 (read and write access for owner, group
 
 ## Consequences
 
-* Reading passwords from the config file
-A malicious user can read sensitive information (such as passwords) from the file.
+* Reading passwords from the config file - A malicious user can read sensitive information (such as passwords) from the file.
 
-* Setting a new password
-A malicious user can write a new password into the file, potentially granting access.
+* Setting a new password - A malicious user can write a new password into the file, potentially granting access.
 
-* Code execution
-If the config file stores commands or parameters, for example, a malicious user can tamper with the config file to achieve code execution.
+* Code execution - If the config file stores commands or parameters, for example, a malicious user can tamper with the config file to achieve code execution.
 
-* Denial of service
-An attacker can delete the contents of the file to prevent the service from running properly.
+* Denial of service - An attacker can delete the contents of the file to prevent the service from running properly.
 
 ## References
 
