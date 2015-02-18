@@ -27,6 +27,4 @@ Go here to if you want your [ip address](https://icanhazip.com/).
 
 ## References
 
-* We're using git flavored markdown
-  * https://help.github.com/articles/github-flavored-markdown/
 * more bullet listed things
