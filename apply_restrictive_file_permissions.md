@@ -36,17 +36,13 @@ Here the file permissions are set to 666 (read and write access for owner, group
 
 ## Consequences
 
-* Reading passwords from the config file
-A malicious user can read sensitive information (such as passwords) from the file.
+* Reading passwords from the config file - A malicious user can read sensitive information (such as passwords) from the file.
 
-* Setting a new password
-A malicious user can write a new password into the file, potentially granting access.
+* Setting a new password - A malicious user can write a new password into the file, potentially granting access.
 
-* Code execution
-If the config file stores commands or parameters, for example, a malicious user can tamper with the config file to achieve code execution.
+* Code execution - If the config file stores commands or parameters, for example, a malicious user can tamper with the config file to achieve code execution.
 
-* Denial of service
-An attacker can delete the contents of the file to prevent the service from running properly.
+* Denial of service - An attacker can delete the contents of the file to prevent the service from running properly.
 
 ## References
 
