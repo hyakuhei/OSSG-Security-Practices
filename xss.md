@@ -1,10 +1,10 @@
 
-Coding Practice Title
-=====================
+Cross-Site Scripting (XSS)
+==========================
 
-Put your description here.
+Cross-Site Scripting is a class of vulnerability whereby an attacker is able to present active web content to a web service, which is subsequently echoed back to a user and executed by the browser.
 
-Separate your paragraphs with a blank line.
+There are three main classes of XSS issue: Persistent, Reflected and DOM-Based.
 
 ### Correct
 A correct code example:
