@@ -27,4 +27,5 @@ If the host's identity is not validated, your credentials can potentially be sto
 
 ## References
 
+* [OSSN-0033](https://wiki.openstack.org/wiki/OSSN/OSSN-0033)
 * https://wiki.openstack.org/wiki/SecureClientConnections
