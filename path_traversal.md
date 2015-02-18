@@ -38,6 +38,24 @@ if __name__ == "__main__":
 
 ```
 
+Another approach to restricting file system access to maintain an indirect mapping between a unique identifier and a file path that exists on the operating system. This prevents users supplying malicious input to access unintended files.
+
+```python
+
+localfiles = {
+  "01" : "/var/www/img/001.png",
+  "02" : "/var/www/img/002.png",
+  "03" : "/var/www/img/003.png",
+}
+
+# Will raise an error if an invalid key is used.
+def get_file(file_id):
+  return open(localfiles[file_id])
+
+```
+
+
+
 
 ### Incorrect
 
