@@ -11,7 +11,7 @@ The inputs are often from configuration files or provided via REST APIs.
 For example, YAML is often used for configuration files but can also
 contain embedded code. 
 
-Many, but no all of these libraries, offer safe interfaces that disable
+Many, but not all of these libraries, offer safe interfaces that disable
 features that enable code execution. You always want to use the safe
 parsing functions. Often the obvious function to use is not the safe
 version and documentation must be checked for libraries not covered
