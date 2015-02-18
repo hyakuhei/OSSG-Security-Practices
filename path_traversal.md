@@ -2,7 +2,7 @@
 Path Traversal
 ==============
 
-A path traversal attack is when an attacker supplies input that is used directly to access a file on the file system. The input usually attempts to break out of the applications working directory and access a file elsewhere on the file system.
+A path traversal attack is when an attacker supplies input that is used directly to access a file on the file system. The input usually attempts to break out of the application's working directory and access a file elsewhere on the file system.
 This category of attack can be mitigated by restricting the scope of file system access and reducing attack surface by using a restricted file permission profile.
 
 
@@ -59,7 +59,7 @@ def get_file(file_id):
 
 ### Incorrect
 
-Path traversal flaws also can happen when unpacking a compressed archive of files. An example of where this has happened within OpenStack is [OSSA-2011-001]((http://security.openstack.org/ossa/OSSA-2011-001.html). In this
+Path traversal flaws also can happen when unpacking a compressed archive of files. An example of where this has happened within OpenStack is [OSSA-2011-001](http://security.openstack.org/ossa/OSSA-2011-001.html). In this
 case a tar file from an untrusted source could be unpacked to overwrite files
 on the host operating system.
 
@@ -92,3 +92,5 @@ code execution.
 ## References
 
 * [CWE-22: Improper Limitation of a Pathname to a Restricted Directory](http://cwe.mitre.org/data/definitions/22.html)
+* [OWASP: Path Traversal](https://www.owasp.org/index.php/Path_Traversal)
+* [Wikipedia: Directory traversal attack](http://en.wikipedia.org/wiki/Directory_traversal_attack)

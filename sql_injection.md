@@ -23,7 +23,10 @@ and [escaping](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sh
 of user supplied input. Most secure web applications will use all three and we
 have described their use below.
 
-### Incorrect
+##Code Examples
+###SQLAlchemy
+
+#### Incorrect
 ```python
 import sqlalchemy
 
@@ -35,7 +38,7 @@ for row in result:
 connection.close()
 ```
 
-### Correct
+#### Correct
 A correct code example (SQLAlchemy):
 ```python
 import sqlalchemy
@@ -47,8 +50,8 @@ for row in result:
     print "username:", row['username']
 connection.close()
 ```
-
-### Incorrect
+### MySQL
+#### Incorrect
 An incorrect code example (MySQL):
 ```python
 import MySQLdb
@@ -61,7 +64,7 @@ with con:
     cur.execute(query)
 ```
 
-### Correct
+#### Correct
 A correct code example (MySQL):
 ```python
 import MySQLdb
@@ -73,8 +76,8 @@ with con:
     cur = con.cursor()
     cur.execute(MySQLdb.escape_string(query))
 ```
-
-### Incorrect
+### PostgreSQL (Psycop2)
+#### Incorrect
 An incorrect code example (Postgesql (psycop2)):
 ```python
 import psycopg2
@@ -84,7 +87,7 @@ cur = conn.cursor()
 cur.execute("select username from users where username = %s" % name)
 ```
 
-### Correct
+#### Correct
 A correct code example (Postgesql (psycop2)):
 Note that the standard python '%' operator is not used.
 ```python

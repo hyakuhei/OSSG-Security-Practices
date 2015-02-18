@@ -6,20 +6,16 @@ Put your description here.
 
 Separate your paragraphs with a blank line.
 
-### Incorrect
-```python
-0/0
-```
-
-Talk to the reader about why the incorrect code is problematic. Give
-details about the unspeakable horrors they will summon. Avoid scaring
-them so much they run away screaming.
-
 ### Correct
 A correct code example:
 ```python
 import subprocess
 subprocess.POpen('rm -rf /', shell=True)
+```
+
+### Incorrect
+```python
+0/0
 ```
 
 Go here to if you want your [ip address](https://icanhazip.com/). You
