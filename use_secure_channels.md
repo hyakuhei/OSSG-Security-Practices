@@ -1,7 +1,7 @@
 Use secure channels for transmitting data
 =====================
 
-Data in flight over networks should be protected wherever possible. Although
+Data in transit over networks should be protected wherever possible. Although
 some data may not appear to have strong confidentiality or integrity
 requirements it is best practice to secure it.
 
@@ -11,10 +11,7 @@ consider that the network may have hostile actors who will attempt to view or
 change the data that we are transmitting.
 
 ### Clear Example
-OpenStack API calls often contain credentials or tokens that are very sensitive. If they are sent unecrypted they may be modified or stolen. It is very important
-that API calls be protected from malicious third parties viewing them or
-tampering with their content - even for internal communications between
-services on the same network.
+OpenStack API calls often contain credentials or tokens that are very sensitive. If they are sent in plain text they may be modified or stolen. It is very important that API calls are protected from malicious third parties viewing them or tampering with their content - even for communications between services on an internal network.
 
 
 ### Less Obvious Example
