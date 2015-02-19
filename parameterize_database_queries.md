@@ -1,20 +1,19 @@
 
-SQL Injection
+Parameterize Database Queries
 =====================
 
 Often we write code that interacts with a database using parameters provided by
 the applications users. These parameters might be credentials, resource
-identifiers or any other user-supplied data.
+identifiers, or any other user-supplied data.
 
 Care must be taken when dynamically creating database queries so they cannot be
-subverted by user crafted malicious input. Such inputs are referred to as SQL
-injections, where the user input changes the logic of the SQL query, which
-results in behavior not intended by the application developer.
+subverted by user crafted malicious input. These inputs are referred to as SQL
+injections. SQL injections work because the user input changes the logic of the SQL query, which results in behavior not intended by the application developer.
 
 The results of a successful SQL injection attack can include disclosure of
-sensitive information, such as user passwords, modification or deletion of
-important data, and gaining execution privileges allowing an attacker to run
-arbitrary commands on the database server.
+sensitive information (such as user passwords), modification or deletion of
+important data, and gaining execution privileges (which allows an attacker to run
+arbitrary commands on the database server).
 
 SQL injection can typically be mitigated by using some combination of [prepared
 statements](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet#Defense_Option_1:_Prepared_Statements_.28Parameterized_Queries.29)
@@ -36,6 +35,9 @@ insertion and not provide any escaping.
 import sqlalchemy
 
 connection = engine.connect()
+myvar = 'jsmith' # our intended usage
+myvar = 'jsmith or 1=1' # uh oh... this will return all users
+myvar = 'jsmith; DROP TABLE users' # uh oh... this removes the users table
 query = "select username from users where username = '%s'" % myvar
 result = connection.execute(query)
 for row in result:
@@ -52,6 +54,8 @@ safely replace the ':name' variable with a provided value.
 import sqlalchemy
 
 connection = engine.connect()
+myvar = 'jsmith' # our intended usage
+myvar = 'jsmith or 1=1' # only matches this odd username
 query = "select username from users where username = :name"
 result = connection.execute(query, name = myvar)
 for row in result:
@@ -93,7 +97,7 @@ with con:
     cur.execute(MySQLdb.escape_string(query))
 ```
 
-An alternative, but also correct, way to do this using a parameterised query
+An alternative, but also correct, way to do this using a parameterized query
 might look like the following:
 
 ```python
@@ -107,13 +111,15 @@ with con:
     cur.execute(query, (username_value,))
 ```
 
+This works because the logic of the query is compiled before the user input is considered.
+
 ### PostgreSQL (Psycop2)
 #### Incorrect
 
 This example uses python's unsafe default parameter substitution mechanism
 to build a query string. This will not perform any escaping, unlike the correct
 example below the string is processed and passed as a single parameter to
-'execute'
+'execute'.
 
 ```python
 import psycopg2
@@ -127,7 +133,7 @@ cur.execute("select username from users where username = '%s'" % name)
 
 This example uses Psycop2's parameter substitution mechanism to build a query
 string. Despite the use '%' to indicate the substitution token, it is not the
-same as pythons built in string operator %. Note the value(s) are passed as
+same as Python's built in string operator %. Note the value(s) are passed as
 parameters to 'execute' separately.
 
 ```python
@@ -139,11 +145,10 @@ cur.execute("select username from users where username = '%s'", (name,))
 ```
 
 ## Consequences
-
+* Potential for full disclosure of data
+* Potential for complete disclosure of data
 * If you don't do this, Dracula will come for your head.
-* Your eyes will fall out.
-* Other Bad Things
 
 ## References
-
-* https://www.owasp.org/index.php/Input_Validation_Cheat_Sheet
+* [More information about SQL Injection](https://www.owasp.org/index.php/SQL_Injection)
+* [SQL Injection Prevention](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet)
