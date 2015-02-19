@@ -48,5 +48,5 @@ cfg.StrOpt('protocol',
 connections on a public network.
 
 ## References
-[Securing Rest APIs](https://stormpath.com/blog/secure-your-rest-api-right-way/)
-[Further reasons to encrypt web traffic](http://chapterthree.com/blog/why-your-site-should-be-using-https)
+* [Securing Rest APIs](https://stormpath.com/blog/secure-your-rest-api-right-way/)
+* [Further reasons to encrypt web traffic](http://chapterthree.com/blog/why-your-site-should-be-using-https)
