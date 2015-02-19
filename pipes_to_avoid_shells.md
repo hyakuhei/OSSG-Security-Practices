@@ -45,12 +45,12 @@ Traceback (most recent call last):
   File "<stdin>", line 3, in count_lines
   File "/usr/lib/python2.7/subprocess.py", line 573, in check_output
     raise CalledProcessError(retcode, cmd, output=output)
-subprocess.CalledProcessError: Command 
+subprocess.CalledProcessError: Command
 '['curl', 'www.google.com', '|', 'wc', '-l']' returned non-zero exit status 6
 ```
 
 The pipe doesn't mean anything special when shell=False, and so curl
-tries to go download the website called pipe.
+tries to download the website called '|'.
 
 Fixed? No. More broken than before.
 
@@ -63,21 +63,21 @@ do this?
 def count_lines(website):
     args = ['curl', website]
     args2 = ['wc', '-l']
-    p1 = subprocess.Popen(args, stdout=subprocess.PIPE, shell=False)
-    p2 = subprocess.Popen(args2, 
-                          stdin=p1.stdout, stdout=subprocess.PIPE,
+    process_curl = subprocess.Popen(args, stdout=subprocess.PIPE, shell=False)
+    process_wc = subprocess.Popen(args2,
+                          stdin=process_curl.stdout, stdout=subprocess.PIPE,
                           shell=False)
-    p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
-    return p2.communicate()[0]
+    process_curl.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
+    return process_wc.communicate()[0]
 
 >>> count_lines('www.google.com')
 '7\n'
 ```
 
-Now rather than calling a single shell process that runs each of our
-programs, we run them separately ourselves. For the curl process, we
-specify `stdout=subprocess.PIPE`, which tells subprocess to send that
-output to the respective file handler.
+Rather than calling a single shell process that runs each of our
+programs, we run them separately ourselves and connect stdout from curl
+to stdin for wc. We specify `stdout=subprocess.PIPE`, which tells
+subprocess to send that output to the respective file handler.
 
 Treat pipes like file descriptors (you can actually use FDs if you
 want) - they may block on reading and writing if nothing is connected
