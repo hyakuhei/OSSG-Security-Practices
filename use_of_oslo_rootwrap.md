@@ -28,7 +28,7 @@ blockdev: RegExpFilter, blockdev, root, blockdev, (--getsize64|--flushbufs), /de
 
 ## Consequences
 
-* A user of the API could potentially inject input that might be included in a call to rootwrap, thus causing caos.
+* A user of the API could potentially inject input that might be included in a call to rootwrap, thus causing chaos.
 
 ## References
 
