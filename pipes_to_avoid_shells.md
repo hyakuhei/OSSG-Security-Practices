@@ -63,11 +63,12 @@ do this?
 def count_lines(website):
     args = ['curl', website]
     args2 = ['wc', '-l']
-    process_curl = subprocess.Popen(args, stdout=subprocess.PIPE, shell=False)
-    process_wc = subprocess.Popen(args2,
-                          stdin=process_curl.stdout, stdout=subprocess.PIPE,
-                          shell=False)
-    process_curl.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
+    process_curl = subprocess.Popen(args, stdout=subprocess.PIPE,
+                                    shell=False)
+    process_wc = subprocess.Popen(args2, stdin=process_curl.stdout,
+                                  stdout=subprocess.PIPE, shell=False)
+    # Allow process_curl to receive a SIGPIPE if process_wc exits.
+    process_curl.stdout.close()
     return process_wc.communicate()[0]
 
 >>> count_lines('www.google.com')
