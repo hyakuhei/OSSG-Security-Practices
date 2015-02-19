@@ -1,11 +1,15 @@
 Use Strong and Established Cryptographic Elements
 =================================================
 
-Cryptography is a complicated topic and the area of significant debate. The specifics mentioned in this guide are likely to change as state of the art continues to advance.
+Cryptography is a complex topic, frequently miss-understood, and the area of significant debate. The specifics mentioned in this guide are likely to change as state of the art continues to advance.
 
-We try to follow two general rules in the OpenStack context:
-* Established, reputable libraries should be used where cryptographic functionality is required.
-* When utilizing cryptographic hashing, signing, or encryption, strong cryptographic primitives should be used.
+In general, you should follow some simple rules for using cryptograph in OpenStack:
+* Do not invent your own cryptography, use existing algorithms and implementations.
+* When utilizing cryptographic hashing, signing, or encryption, strong cryptographic primitives must be used.
+* Use established, reputable libraries with active maintenance rather than implementing your own algorithms.
+* Pay carefull attention to key management and distribution, this is generally a harder problem than algorithm selection and implementation.
+
+Cryptography should be used to solve a specific problem or mitigate a specific threat, such as ensuring the confidentiality of some data in transit over an un-trusted network connection. Both the cryptographic algorithm and the key strength should be appropriate for the threat you are trying to mitigate, and the limitations of the cryptography should be understood. For example, if encryption is applied to a network link, it will not protect the data when it is processed or stored at either end of that link. When deploying cryptography, the impact to system performance and availability must also be considered.
 
 The Python cryptography libraries currently in OpenStack global requirements include [PyCrypto](https://www.dlitz.net/software/pycrypto/), [pyOpenSSL](https://github.com/pyca/pyopenssl), [cryptography](https://cryptography.io/), and [passlib](https://pythonhosted.org/passlib/).
 
@@ -14,10 +18,12 @@ Use of the following cryptographic elements is encouraged:
 * AES is the preferred general encryption algorithm, with 128, 192 or 256 bit key lengths.
 * *TBD - alg. for password encryption?*
 * HMAC is the preferred signing construction, in conjunction with a preferred hashing algorithm.
-* TLSv1.1 or TLSv1.2 are preferred for protecting data in transit between client and web service.
+* TLSv1.1 or TLSv1.2 are preferred for protecting data in transit between clients and web services.
 
 While for some use cases it may seem appropriate to use a weaker cryptographic element, the options listed above are generally advised. Usage of the following is discouraged:
 * MD5
+* DES
+* RC4
 * SSLv2, SSLv3, TLSv1.0
 
 ## Consequences
