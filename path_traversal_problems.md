@@ -2,8 +2,61 @@
 Path Traversal
 ==============
 
-A path traversal attack is when an attacker supplies input that is used directly to access a file on the file system. The input usually attempts to break out of the application's working directory and access a file elsewhere on the file system.
+Often we will refer to a file on disk or other resource using a path. A path traversal attack is when an attacker supplies input that gets used with our path to access a file on the file system that we did not intend. The input usually attempts to break out of the application's working directory and access a file elsewhere on the file system.
 This category of attack can be mitigated by restricting the scope of file system access and reducing attack surface by using a restricted file permission profile.
+
+### Incorrect
+
+A typical remote vector for path traversal in web applications
+might involve serving or storing files on the file system. Consider the following example:
+
+```python
+
+
+import os
+from flask import Flask, redirect, request, send_file
+
+app = Flask(__name__)
+
+@app.route('/')
+def cat_picture():
+    image_name = request.args.get('image_name')
+    if not image_name:
+        return 404
+    return send_file(os.path.join(os.getcwd(), image_name))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+```
+
+As the attacker controls the input that is used directly in
+constructing a path they are able to access any file on the system. For
+example consider what happens if an attacker makes a request like:
+
+```
+curl http://example.com/?image_name=../../../../../../../../etc/passwd
+```
+
+
+Path traversal flaws also can happen when unpacking a compressed archive of files. An example of where this has happened within OpenStack is [OSSA-2011-001](http://security.openstack.org/ossa/OSSA-2011-001.html). In this
+case a tar file from an untrusted source could be unpacked to overwrite files
+on the host operating system.
+
+```python
+
+import tarfile
+
+def untar_image(path, filename):
+    tar_file = tarfile.open(filename, 'r|gz')
+    tar_file.extract_all(path)
+    image_file = tar_file.get_names()[0]
+    tar_file.close()
+    return os.path.join(path, image_file)
+
+
+```
 
 
 ### Correct
@@ -51,62 +104,6 @@ localfiles = {
 # Will raise an error if an invalid key is used.
 def get_file(file_id):
   return open(localfiles[file_id])
-
-```
-
-
-
-
-### Incorrect
-
-A typical remote vector for path traversal in web applications
-is serving or storing files on the file system. Consider the following example:
-
-```python
-
-
-import os
-from flask import Flask,redirect, request, send_file
-
-app = Flask(__name__)
-
-@app.route('/')
-def cat_picture():
-    image_name = request.args.get('image_name')
-    if not image_name:
-        return 404
-    return send_file(os.path.join(os.getcwd(), image_name))
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-```
-
-As the attacker controls the input that is used directly in
-constructing a path they are able to access any file on the system. For
-example consider what happens if an attacker makes a request like:
-
-```
-curl http://example.com/?image_name=../../../../../../../../etc/passwd
-```
-
-
-Path traversal flaws also can happen when unpacking a compressed archive of files. An example of where this has happened within OpenStack is [OSSA-2011-001](http://security.openstack.org/ossa/OSSA-2011-001.html). In this
-case a tar file from an untrusted source could be unpacked to overwrite files
-on the host operating system.
-
-```python
-
-import tarfile
-
-def untar_image(path, filename):
-    tar_file = tarfile.open(filename, 'r|gz')
-    tar_file.extract_all(path)
-    image_file = tar_file.get_names()[0]
-    tar_file.close()
-    return os.path.join(path, image_file)
-
 
 ```
 
