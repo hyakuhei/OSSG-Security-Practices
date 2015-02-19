@@ -1,15 +1,15 @@
 
-Safe use of oslo rootwrap
+Use oslo rootwrap conscientiously
 =====================
 
-Rootwrap provides a mechanism in which a caller may execute a command line with needed escalated privileges (typically as root).  Special care must be taken to ensure this use of code does not permit a lessor privileged user from the API gaining access to run commands as root.
+Rootwrap provides a mechanism in which a caller may execute a command line with needed escalated privileges (typically as root).  Special care must be taken to ensure this use of code does not permit a lesser privileged user to run commands as root.
 
-Rootwrap provides a series of filters to restrict the command to limit the exposure.  The most commonly used filter is CommandFilter, but it also provides the least amount of restriction on how the command is called.
+Rootwrap provides a series of filters to restrict command usage to limit the exposure.  The most commonly used filter is CommandFilter, but it also provides the least amount of restriction on how the command is called.
 
 Consider the following before using rootwrap:
-* Try to avoid using rootwrap.  Look for alternative libraries that might provide the functionality with root permission.
-* Use the most restrictive filter possible, typically RegExpFilter.
 * Evaluate whether running the command as root is necessary.  In some cases, another user might be more appropriate.
+* Try to avoid using rootwrap.  Look for Python native implementations of the required functionality rather than running operating system commands.
+* If rootwrap is required, use the most restrictive filter possible (typically RegExpFilter).
 
 ### Incorrect
 ```python
