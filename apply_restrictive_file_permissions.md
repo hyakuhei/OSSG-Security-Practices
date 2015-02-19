@@ -8,31 +8,66 @@ In particular, any files which may contain confidential information should be se
 
 Discretion should be used when granting write access to files such as configuration files to prevent vulnerabilities including denial of service and remote code execution.
 
-### Correct
-Consider the configuration file for a service "secureserv" which stores configuration including passwords in "secureserv.conf".  Since it contains sensitive information, other users should not be given access.
-
-```sh
-ls -l secureserv.conf
--rw-------   1 secureserv  secureserv   6710 Feb 17 22:00 secureserv.conf
-```
-
-To set the file permissions as shown above, run the following command in Linux:
-
-```sh
-chmod 0600 secureserv.conf
-```
-
-Note that it is also important to verify the owner and group of the file.  It is particularly important to note what other users are part of a group that you give access to.  The best practice is that if group access is not needed, don't grant it.  This is part of the principle of least privilege.
-
 ### Incorrect
-Consider the same example config file in the above example with the following permissions:
+Consider the a configuration file for a service "secureserv" which stores configuration including passwords in "secureserv.conf".
 
 ```sh
 ls -l secureserv.conf
 -rw-rw-rw-   1 secureserv  secureserv   6710 Feb 17 22:00 secureserv.conf
 ```
+Here the file permissions are set to 666 (read and write access for owner, group, and others).  This will allow other users on the system to have access to the
+sensitive information contained within the configuration file.
 
-Here the file permissions are set to 666 (read and write access for owner, group, and others).  This creates several vulnerabilities as described below.
+When writing to a file on a UNIX operating system using Python the file output
+will be written using the umask that is set for the application. Depending on
+your operating systems configuration this could be too permissive when
+writing sensitive data to file.
+
+Given this program:
+
+```python
+with open('testfile.txt', 'w') as fout:
+    fout.write("secrets!")
+
+```
+
+The file permissions will default to the environment settings. Here the umask
+allows file content to be read by other users on the system.
+
+```
+ls -l testfile.txt
+-rw-r--r--  1 user  staff  4 Feb 19 10:59 testfile.txt
+```
+
+
+### Correct
+
+It is preferable to set restrictive permissions files containing sensitive
+information. To fix the example above you would need to set permissions to
+make the file only readable and writeable to the user that created it.
+
+
+```sh
+chmod 0600 securesev.conf
+ls -l secureserv.conf
+-rw-------   1 secureserv  secureserv   6710 Feb 17 22:00 secureserv.conf
+```
+
+Below is an example of how you could securely create a file in Python with the same permissions above.
+
+```python
+
+import os
+
+flags = os.O_WRONLY | os.O_CREAT | os.EXLC
+with os.fdopen(os.open('testfile.txt', flags, 0600), 'w') as fout:
+    fout.write("secrets!")
+
+```
+
+Note that it is also important to verify the owner and group of the file.  It is particularly important to note what other users are part of a group that you give access to.  The best practice is that if group access is not needed, don't grant it.  This is part of the principle of least privilege.
+
+
 
 ## Consequences
 
