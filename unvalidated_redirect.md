@@ -2,15 +2,41 @@
 Unvalidated URL redirect
 ========================
 
+It is common for web forms to redirect to a different page upon successful
+submission of the form data. This is often done using a _next_ or _return_ parameter
+in the http request. Any HTTP parameter can be controlled by the user, and could be
+abused by attackers to redirect a user to a malicious site.
 
-It is common place for web forms to redirect to a different pages upon successful
-submission of the form data. This is generally done by a using a _next_ parameter
-in the http request. Any HTTP parameter is user controlled input, and can be
-abused by attackers to redirect a user to a malicious site. This is commonly
-used in phishing attacks. An example of how an attacker may exploit URL redirects: https://www.example.com/login.php?next=http://attacker.com/phonylogin.php
+This is commonly used in phishing attacks, for example an attacker could 
+redirect a user from a legitimate login form to a fake attacker controlled login
+form. If the page looks enough like the target site, and tricks the user into
+believing they mistyped their password, the attacker can convince the user to
+re-enter their credentials and send them to the attacker.
 
-To counter this type of attack redirects need to be validated before redirecting the user to an external site. Essentially you should confirm that the redirection will take the user to another page within your site.
+Here is an example malicious redirect URL:
 
+```
+https://good.com/login.php?next=http://bad.com/phonylogin.php
+```
+
+To counter this type of attack all URL's need to be validated before being used
+to redirect the user. This should ensure the redirect will take the user to a
+page within your site.
+
+### Incorrect
+
+```python
+
+import os
+from flask import Flask,redirect, request
+
+app = Flask(__name__)
+
+@app.route('/')
+def example_redirect():
+    return redirect(request.args.get('next'))
+
+```
 
 ### Correct
 
@@ -48,23 +74,6 @@ The Django framework contains a [django.utils.http.is_safe_url](https://github.c
 be used to validate redirects without implementing a custom version.
 
 
-
-### Incorrect
-
-
-
-```python
-
-import os
-from flask import Flask,redirect, request
-
-app = Flask(__name__)
-
-@app.route('/')
-def example_redirect():
-    return redirect(request.args.get('next'))
-
-```
 
 ## Consequences
 
