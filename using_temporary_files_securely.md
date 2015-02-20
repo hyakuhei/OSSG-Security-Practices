@@ -3,26 +3,24 @@ Create, use, and remove temporary files securely
 
 Often we want to create temporary files to save data that we can't hold
 in memory or to pass to external programs that must read from a file.
-The obvious way to do so is to generate a unique file name in a common
-system temporary directory such as /tmp. This still leaves us open to a
-number of dangerous issues. Our unique file name must also be unpredictable.
-The file must be opened such that it will fail if an existing file has
-the same name. We must make sure the file has the correct permissions.
-We have to assess if we care if others can know about our tempoary
-file. Finally, we must cleanup the tempoary file when we no longer
-need it.
+The obvious way to do this is to generate a unique file name in a common
+system temporary directory such as /tmp, but doing so correctly is harder
+than it seems. Safely creating a temporary file or directory means following
+a number of rules (see the references for more details). We should never do
+this ourselves but use the correct existing library function. We also
+must take care to cleanup our temporary files even in the face of errors.
 
 If we don't take all these precautions we open ourselves up to a number
 of dangerous security problems. Malicious users that can predict the
 file name and write to directory containing the temporary file can
 effectively hijack the temporary file by creating a symlink with the
-name of the temporary file before the program does so itself.
+name of the temporary file before the program creates the file itself.
 This allows a malicious user to supply malicious data or cause actions
 by the program to affect attacker chosen files. The references
 have more extensive descriptions of potential dangers.
 
 Most programming lanuages provide functions to create temporary
-files. However, many of these functions are unsafe and should not
+files. However, some of these functions are unsafe and should not
 be used. We need to be careful to use the safe functions.
 
 Despite the safer temporary file creation APIs we must still be
@@ -55,15 +53,11 @@ attacker might pre-emptively place a file at the specified location.
 import os
 import tempfile
 
-def dont_use_predictable_paths(filename):
-
-    tmp = os.path.join(tempfile.gettempdir(), filename)
-    if not os.path.exists(tmp):
-        with open(tmp, "w") file:
-            file.write("defaults")
-
-    # create a file like this you cannot be certain of
-    # the integrity of its contents
+# This will most certainly put you at risk
+tmp = os.path.join(tempfile.gettempdir(), filename)
+if not os.path.exists(tmp):
+    with open(tmp, "w") file:
+        file.write("defaults")
 
 ```
 
@@ -75,25 +69,24 @@ cannot be used in a secure way to create temporary file creation.
 ```python
 import os
 import tempfile
-def dont_use_mktemp(prefix):
-    return open(tempfile.mktemp(), "w")
+
+open(tempfile.mktemp(), "w")
 ```
 
-Finally there are many ways developers try to create a secure filename,
-however if the attacker is skilled enough mechanisms like the following
-are easily defeated.
+Finally there are many ways we could try to create a secure filename
+that will not be secure and is easily predictable.
 
 ```python
 
-def dont_invent_naming_convention():
-    filename = "{}/{}.tmp".format(tempfile.gettempdir(), os.getpid())
-    return open(filename, "w")
-
+filename = "{}/{}.tmp".format(tempfile.gettempdir(), os.getpid())
+open(filename, "w")
 ```
 
 ### Correct
 
-The Python standard library provides a number of secure ways at creating temporary files and directory. The following are examples of how you can use them.
+The Python standard library provides a number of secure ways to create
+temporary files and directories. The following are examples of how you can
+use them.
 
 Creating files:
 
@@ -101,60 +94,59 @@ Creating files:
 import os
 import tempfile
 
-def using_TemporaryFile_context_manager_for_clean_up():
-    with tempfile.TemporaryFile() as tmp:
-        go_do_stuff(tmp)
+# Use the TemporaryFile context manager for easy clean-up
+with tempfile.TemporaryFile() as tmp:
+    # Do stuff with tmp
+    tmp.write('stuff')
 
-def using_NamedTemporaryFile():
-    tmp = tempfile.NamedTemporaryFile(delete=True)
-    go_do_stuff(tmp)
+# Clean up a NamedTemporaryFile on your own
+# delete=True means the file will be deleted on close
+tmp = tempfile.NamedTemporaryFile(delete=True)
+try:
+    # do stuff with temp
+    tmp.write('stuff')
+finally:
     tmp.close()  # deletes the file
 
-def using_mkstemp_to_create_a_tempfile(**kwargs):
-    fd, path = tempfile.mkstemp(**kwargs)
-    try:
-        with os.fdopen(fd, mode="w") as tmp:
-            # do stuff with temp file
-            tmp.write("secrets!")
 
-    finally:
-        os.remove(path)
-
-
+# Handle opening the file yourself. This makes clean-up
+# more complex as you must watch out for exceptions
+fd, path = tempfile.mkstemp()
+try:
+    with os.fdopen(fd, 'w') as tmp:
+        # do stuff with temp file
+        tmp.write('stuff')
+finally:
+    os.remove(path)
 ```
 
-We can also safely create a temporary directory and create our tempory files
-with predictable names inside it. We use os.open because it allows us to 
-explicitly set the file permissions of the new file. We could use open, but
-then must deal with temporarily modifying the umask.
+We can also safely create a temporary directory and create temporary files
+inside it. We need to set the umask before creating the
+file to ensure the permissions on the file only allow the creator read and
+write access.
 
 ```python
+import os
+import tempfile
 
-TODO(ljfisher) check this actually works
+tmpdir = tempfile.mkdtemp()
+predictable_filename = 'myfile'
 
-def using_mkdtemp_to_create_directories(predictable_filename):
-    tmpdir = tempfile.mkdtemp()
+# Ensure the file is read/write by the creator only
+saved_umask = os.umask(0077)
 
-    try:
-        fd = os.open(os.join(tmpdir, predictable_filename), os.O_RDWR | os.CREAT) 
-        with os.fdopen(fd, 'w') as tmp:
-            tmp.write("secrets!")
-    finally:
-        if fd:
-            os.unlink(fd)
-    
-
-def using_mkdtemp_to_create_directories(predictable_filename):
-    tmpdir = tempfile.mkdtemp()
-    saved_umask = os.umask(077)
-    try:
-        with open(os.join(tmpdir, predictable_filename), "w") as tmp:
-            tmp.write("secrets!")
-
-    finally:
-        os.umask(saved_umask)
-
-    return tmpdir
+path = os.path.join(tmpdir, predictable_filename)
+print path
+try:
+    with open(path, "w") as tmp:                                                                                                                        
+        tmp.write("secrets!")
+except IOError as e:
+    print 'IOError'
+else:
+    os.remove(path)
+finally:
+    os.umask(saved_umask)
+    os.rmdir(tmpdir)
 ```
 
 ## Consequences
