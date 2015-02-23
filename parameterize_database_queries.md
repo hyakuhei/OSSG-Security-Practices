@@ -2,18 +2,21 @@
 Parameterize Database Queries
 =====================
 
-Often we write code that interacts with a database using parameters provided by
-the applications users. These parameters might be credentials, resource
-identifiers, or any other user-supplied data.
+Often we write code that interacts with a database using parameters
+provided by the application's users. These parameters include
+credentials, resource identifiers and other user-supplied data.
 
-Care must be taken when dynamically creating database queries so they cannot be
-subverted by user crafted malicious input. These inputs are referred to as SQL
-injections. SQL injections work because the user input changes the logic of the SQL query, which results in behavior not intended by the application developer.
+Care must be taken when dynamically creating database queries to
+prevent them being subverted by user supplied malicious input, this is
+generally referred to as SQL injection (SQLi). SQL injection works
+because the user input changes the logic of the SQL query, resulting in
+behaviour that is not intended by the application developer.
 
-The results of a successful SQL injection attack can include disclosure of
-sensitive information (such as user passwords), modification or deletion of
-important data, and gaining execution privileges (which allows an attacker to run
-arbitrary commands on the database server).
+The results of a successful SQL injection attack can include
+disclosure of sensitive information such as user passwords,
+modification or deletion of data, and gaining execution privileges,
+which would allow an attacker to run arbitrary commands on the database
+server.
 
 SQL injection can typically be mitigated by using some combination of [prepared
 statements](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet#Defense_Option_1:_Prepared_Statements_.28Parameterized_Queries.29)
@@ -36,8 +39,8 @@ import sqlalchemy
 
 connection = engine.connect()
 myvar = 'jsmith' # our intended usage
-myvar = 'jsmith or 1=1' # uh oh... this will return all users
-myvar = 'jsmith; DROP TABLE users' # uh oh... this removes the users table
+myvar = 'jsmith or 1=1' # this will return all users
+myvar = 'jsmith; DROP TABLE users' # this drops (removes) the users table
 query = "select username from users where username = '%s'" % myvar
 result = connection.execute(query)
 for row in result:

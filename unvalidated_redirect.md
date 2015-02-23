@@ -2,28 +2,32 @@
 Unvalidated URL redirect
 ========================
 
-It is common for web forms to redirect to a different page upon successful
-submission of the form data. This is often done using a _next_ or _return_ parameter
-in the http request. Any HTTP parameter can be controlled by the user, and could be
-abused by attackers to redirect a user to a malicious site.
+It is common for web forms to redirect to a different page upon
+successful submission of the form data. This is often done using a
+_next_ or _return_ parameter in the http request. Any HTTP parameter
+can be controlled by the user, and could be abused by attackers to
+redirect a user to a malicious site.
 
-This is commonly used in phishing attacks, for example an attacker could 
-redirect a user from a legitimate login form to a fake attacker controlled login
-form. If the page looks enough like the target site, and tricks the user into
-believing they mistyped their password, the attacker can convince the user to
-re-enter their credentials and send them to the attacker.
+This is commonly used in phishing attacks, for example an attacker
+could  redirect a user from a legitimate login form to a fake,
+attacker controlled, login form. If the page looks enough like the
+target site, and tricks the user into believing they mistyped their
+password, the attacker can convince the user to re-enter their
+credentials and send them to the attacker.
 
-Here is an example malicious redirect URL:
+Here is an example of a malicious redirect URL:
 
 ```
 https://good.com/login.php?next=http://bad.com/phonylogin.php
 ```
 
-To counter this type of attack all URL's need to be validated before being used
-to redirect the user. This should ensure the redirect will take the user to a
-page within your site.
+To counter this type of attack all URLs must be validated before being
+used to redirect the user. This should ensure the redirect will take
+the user to a page within your site.
 
 ### Incorrect
+
+This example just processes the 'next' argument with no validation:
 
 ```python
 
@@ -40,9 +44,9 @@ def example_redirect():
 
 ### Correct
 
-The following is an example using the Flask web framework. It essentially
-check that the URL the user is being redirected to originates from the
-same host as the host serving the content.  
+The following is an example using the Flask web framework. It checks
+that the URL the user is being redirected to originates from the same
+host as the host serving the content.  
 
 ```python
 
@@ -70,17 +74,16 @@ def get_safe_redirect():
 
 ```
 
-The Django framework contains a [django.utils.http.is_safe_url](https://github.com/django/django/blob/93b3ef9b2e191101c1a49b332d042864df74a658/django/utils/http.py#L268) function that can
-be used to validate redirects without implementing a custom version.
+The Django framework contains a [django.utils.http.is_safe_url](https://github.com/django/django/blob/93b3ef9b2e191101c1a49b332d042864df74a658/django/utils/http.py#L268)
+function that can be used to validate redirects without implementing a
+custom version.
 
 
 
 ## Consequences
 
-Unvalidated redirects can make your site a target for phishing attacks that can
+* Unvalidated redirects can make your site a target for phishing attacks that can
 lead to users credentials being stolen.
-
-
 * [OSSA-2012-012](http://security.openstack.org/ossa/OSSA-2012-012.html)
 
 

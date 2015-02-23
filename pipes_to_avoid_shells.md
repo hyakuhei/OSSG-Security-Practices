@@ -2,16 +2,16 @@
 Python pipes to avoid shells
 ============================
 
-You should take a look at the [shell injection document](/shell_injection.md) before this one.
-
+You should take a look at the
+[shell injection document](/shell_injection.md) before this one.
 
 A lot of the time, our codebase uses `shell=True` because it's
 convenient. The shell provides the ability to pipe things around
 without buffering them in memory, and makes it easy to chain commands.
 
-Here's a simple function that uses curl to grab a website, and pipe it
-directly to the `wordcount` program to tell us how many lines there
-are in the source code.
+Here is a simple function that uses curl to grab a page from a website,
+and pipe it directly to the `wordcount` program to tell us how many
+lines there are in the HTML source code.
 
 ### Incorrect
 
@@ -24,7 +24,8 @@ def count_lines(website):
 
 ```
 
-(that output is correct, by the way - google does have 7 lines)
+(that output is correct, by the way - the google html source does have
+7 lines)
 
 The function is insecure because it uses `shell=True`, which allows
 [shell injection[(/shell_injection.md). A user to who instructs your
@@ -83,8 +84,8 @@ subprocess to send that output to the respective file handler.
 Treat pipes like file descriptors (you can actually use FDs if you
 want) - they may block on reading and writing if nothing is connected
 to the other end. That's why we use `communicate()`, which reads until
-EOF on the output and then waits for the process to terminate. You'll
-generally want to avoid reading and writing to pipes directly unless
+EOF on the output and then waits for the process to terminate. You
+should generally avoid reading and writing to pipes directly unless
 you really know what you're doing - it's easy to work yourself into a
 situation that can deadlock.
 

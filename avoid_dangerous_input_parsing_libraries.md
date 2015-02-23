@@ -1,13 +1,15 @@
 Avoid dangerous file parsing and object serialization libraries (YAML, pickle)
-=====================
+==============================================================================
 
-Many common libraries (PyYAML, pickle) we often use for reading configuration files and deserializing
-objects are very dangerous because they allow execution of arbitrary code.
-These libraries do not provide strong separation of data and code by default and allow embedding of code inside the input.
+Many common libraries that are often used for reading configuration
+files and deserializing objects are very dangerous because they can
+allow execution of arbitrary code. By default, libraries such as PyYAML
+and pickle do not provide strong separation of data and code, and thus
+allow code to be embedded inside the input.
 
-Often the input to these libraries is untrusted or only partially trusted.
-These unsafe inputs can come from configuration files or provided via REST APIs.
-For example, we often use YAML for configuration files but YAML files can also
+Often the input to these libraries is untrusted or only partially
+trusted. These unsafe inputs can come from configuration files or be
+provided via REST APIs. For example, we often use YAML for configuration files but YAML files can also
 contain embedded Python code. This may provide an attacker with a method to execute code.
 
 Many, but not all, of these libraries, offer safe interfaces that disable
@@ -42,7 +44,7 @@ key: 'value'
 conf = yaml.load(conf_str)
 ```
 
-Niether pickle or eval should ever be used with input that is not trusted.
+Neither pickle nor eval should be used with input that is untrusted.
 
 ```python
 import pickle
@@ -64,17 +66,16 @@ conf_str = '''
 '''
 conf = yaml.safe_load(conf_str)
 ```
-
+There is no safe alternative for pickle.load.
 
 ## Consequences
 
-Anyone that can control the input passed to dangerous libraries (by
-modifying configuration files or sending data via external APIs, for example) can run
-arbitrary code on your system.
+* Anyone that can control the input passed to dangerous libraries can
+gain arbitrary code execution on the system running the dangerous library.
 
 ## References
 
 * [PyYAML: Loading YAML](http://pyyaml.org/wiki/PyYAMLDocumentation#LoadingYAML)
 * [Why Python Pickle is Insecure](http://michael-rushanan.blogspot.com/2012/10/why-python-pickle-is-insecure.html)
 (https://blog.nelhage.com/2011/03/exploiting-pickle/)
-* [Exploiting misue of Python's "pickle"](http://michael-rushanan.blogspot.com/2012/10/why-python-pickle-is-insecure.html)
+* [Exploiting misuse of Python's "pickle"](http://michael-rushanan.blogspot.com/2012/10/why-python-pickle-is-insecure.html)

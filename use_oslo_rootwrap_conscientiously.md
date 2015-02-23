@@ -2,21 +2,32 @@
 Use oslo rootwrap conscientiously
 =====================
 
-Rootwrap provides a mechanism in which a caller may execute a command line with needed escalated privileges (typically as root).  Special care must be taken to ensure this use of code does not permit a lesser privileged user to run commands as root.
+Rootwrap provides a mechanism in which a caller may execute a command
+line with escalated privileges (typically as root). Special care must
+be taken to ensure this use of code does not permit a lesser privileged
+user to run commands as root.
 
-Rootwrap provides a series of filters to restrict command usage to limit the exposure.  The most commonly used filter is CommandFilter, but it also provides the least amount of restriction on how the command is called.
+Rootwrap provides a series of filters to restrict command usage to
+limit the exposure. The most commonly used filter is CommandFilter, but
+it also provides the least amount of restriction on how the command is
+called.
 
 Consider the following before using rootwrap:
-* Evaluate whether running the command as root is necessary.  In some cases, another user might be more appropriate.
-* Try to avoid using rootwrap.  Look for Python native implementations of the required functionality rather than running operating system commands.
-* If rootwrap is required, use the most restrictive filter possible (typically RegExpFilter).
+* Evaluate whether running the command as root is necessary. In some
+cases, another user may be more appropriate.
+* Try to avoid using rootwrap. Look for Python native implementations
+of the required functionality rather than running operating system
+commands.
+* If rootwrap is required, use the most restrictive filter possible
+(typically RegExpFilter).
 
 ### Incorrect
 ```python
 # nova/virt/disk/vfs/localfs.py: 'chmod'
 chmod: CommandFilter, chmod, root
 ```
-This filter is too permissive because it allows the chmod command to be run as root with any number of arguments, on any file.
+This filter is too permissive because it allows the chmod command to be
+run as root with any number of arguments, on any file.
 
 ### Correct
 A correct code example:
@@ -28,7 +39,8 @@ blockdev: RegExpFilter, blockdev, root, blockdev, (--getsize64|--flushbufs), /de
 
 ## Consequences
 
-* A user of the API could potentially inject input that might be included in a call to rootwrap, thus causing chaos.
+* A user of the API could potentially inject input that might be
+executed at high privileges due to an in-effective rootwrap configuration.
 
 ## References
 

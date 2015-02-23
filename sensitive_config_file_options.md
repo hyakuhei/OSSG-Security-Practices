@@ -2,14 +2,14 @@
 Ensure sensitive config file options are marked secret to prevent disclosure in logs
 =====================
 
-While it is preferable to not store any sensitive information in log files, there
-are occasions where this is unavoidable. For those situations, oslo.config provides
-a useful mechanism by which those sensitive pieces of information can be sanitized
-and protected.
+It is preferable to avoid storing sensitive information in
+configuration files, but there are occasions where this is unavoidable.
+For those situations, oslo.config provides a useful mechanism by which
+those sensitive pieces of information can be sanitized and protected.
 
-In order to trigger this santization, we need to add a 'secret=True' flag to the
-'cfg.StrOpt()' function when registering the oslo configuration. An example of this practice
-is provided below.
+In order to trigger this santization, a 'secret=True' flag must be
+added to the 'cfg.StrOpt()' function when registering the oslo
+configuration. An example of this practice is provided below.
 
 
 ### Incorrect
@@ -29,8 +29,9 @@ A correct code example:
 
 ## Consequences
 
-If sensitive information is logged without being marked as secret, that sensitive
-information would be exposed whenever the logger debug flag is activated.
+If sensitive information is logged without being marked as secret, that
+sensitive information would be exposed whenever the logger debug flag
+is activated.
 
 
 ### Example Log Entries

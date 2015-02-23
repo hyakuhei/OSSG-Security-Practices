@@ -1,10 +1,10 @@
 Create, use, and remove temporary files securely
 =====================
 
-Often we want to create temporary files to save data that we can't hold
-in memory or to pass to external programs that must read from a file.
-The obvious way to do so is to generate a unique file name in a common
-system temporary directory such as /tmp. This still leaves us open to a
+Often we want to create temporary files to save data that cannot be
+held in memory or to pass data to external programs that must read from
+a file. The obvious way to do so is to generate a unique file name in a
+common system temporary directory such as /tmp. This still leaves us open to a
 number of dangerous issues. Our unique file name must also be unpredictable.
 The file must be opened such that it will fail if an existing file has
 the same name. We must make sure the file has the correct permissions.
